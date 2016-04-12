@@ -33,6 +33,7 @@ public class Menu {
 				choice = options[c-1];
 			}
 		}
+		choice.notifyObservers();
 		return choice.getAction();
 	}
 

@@ -1,13 +1,15 @@
 package controller;
 
+import patterns.Observer;
 import view.ConsoleView;
 import view.Menu;
 import view.Option;
 
-public class AppTestMenu {
-	public void run() {
-		ConsoleView view = new ConsoleView();
+public class AppTestMenu implements Observer {
+	
+	ConsoleView view = new ConsoleView();
 
+	public void run() {
 		Menu menuPessoa = createMenuPessoa();
 		String action = view.executeMenu(menuPessoa);
 		view.displayMessage(action);
@@ -52,9 +54,19 @@ public class AppTestMenu {
 		for (int i = 0; i < options.length; i++) {
 			Option option =
 				new Option(options[i], commands[i]);
+			option.register(this);
 			menu.addOption(option);
 		}
 		
 		return menu;
+	}
+	
+	/*
+	 * Observer implementation
+	 */
+
+	@Override
+	public void notify(String action) {
+		view.displayMessage("Action received: " + action);
 	}
 }
