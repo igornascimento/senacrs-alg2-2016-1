@@ -10,41 +10,29 @@ public class AppTestMenu implements Observer {
 	ConsoleView view = new ConsoleView();
 
 	public void run() {
-		Menu menuPessoa = createMenuPessoa();
-		String action = view.executeMenu(menuPessoa);
-		view.displayMessage(action);
-
-		Menu menuMedicamento = createMenuMedicamento();
-		action = view.executeMenu(menuMedicamento);
-		view.displayMessage(action);
+		String[] menus = { "Pessoas", "Enderecos" };
+		
+		for (String item : menus) {
+			Menu menu = createMenuCadastro(item);
+			String action = view.executeMenu(menu);
+			view.displayMessage(action);
+		}
 	}
 	
-	private Menu createMenuMedicamento() {
-		String[] options =  {
-				"Inserir Medicamento",
-				"Procurar Medicamento",
-				"Excluir Medicamento"
-			};
-			String[] commands =  {
-				"medicamento.inserir",
-				"medicamento.procurar",
-				"medicamento.excluir"
-			};
-		return createMenu("Medicamentos",options, commands);
-	}
 
-	private Menu createMenuPessoa() {
+	private Menu createMenuCadastro(String item) {
 		String[] options =  {
-			"Inserir Pessoa",
-			"Procurar Pessoa",
-			"Excluir Pessoa"
-		};
+				"Inserir " + item,
+				"Procurar " + item,
+				"Excluir " + item
+			};
+		String lower = item.toLowerCase();
 		String[] commands =  {
-			"pessoa.inserir",
-			"pessoa.procurar",
-			"pessoa.excluir"
+			lower + ".inserir",
+			lower + ".procurar",
+			lower + ".excluir"
 		};
-		return createMenu("Pessoas", options, commands);
+		return createMenu(item, options, commands);
 	}
 
 	private Menu createMenu(String title, String[] options, String[] commands)
