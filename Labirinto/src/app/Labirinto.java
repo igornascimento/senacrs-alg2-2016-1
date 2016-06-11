@@ -1,5 +1,7 @@
 package app;
 
+import java.util.ArrayList;
+
 import com.senac.SimpleJava.Graphics.Canvas;
 import com.senac.SimpleJava.Graphics.GraphicApplication;
 import com.senac.SimpleJava.Graphics.Point;
@@ -15,6 +17,16 @@ public class Labirinto
 {
 
 	private GraphicObject[] objects;
+	private ArrayList<?> arrayConfig;
+	
+	/**
+	 * Recebe um array de configuracao para a definicao 
+	 * das imgs a serem utilizadas
+	 * @param conf {{imgSrc, x, y, w, h}, ...}
+	 */
+	private Labirinto(ArrayList<?> conf){
+		this.arrayConfig = conf;
+	}
 	
 	@Override
 	protected void draw(Canvas canvas) {
@@ -31,18 +43,7 @@ public class Labirinto
 	@Override
 	protected void setup() {
 		setResolution(Resolution.HIGHRES);
-		
-		objects = new GraphicObject[5];
-		objects[0] = new GraphicObject("images/barbarian.jpg",50,100);
-		objects[0].resize(200, 200);
-		objects[1] = new GraphicObject("images/halforc.jpg",350,250);
-		objects[1].resize(200, 200);
-		objects[2] = new GraphicObject("images/treasure.jpg",550,400);
-		objects[2].resize(150, 150);
-		objects[3] = new GraphicObject("images/door.jpg",600,50);
-		objects[3].resize(200, 200);
-		objects[4] = new GraphicObject("images/door.jpg",0,300);
-		objects[4].resize(150, 200);
+		createGraphicObjects(arrayConfig);
 		
 		for (MouseObserver mo : objects)
 			addMouseObserver(MouseEvent.CLICK, mo);
@@ -50,6 +51,14 @@ public class Labirinto
 		addMouseObserver(MouseEvent.CLICK, this);
 		
 		redraw();
+	}
+
+	private void createGraphicObjects(ArrayList<?> arrConf) {
+		this.objects = new GraphicObject[ arrConf.size() ];
+		for (int i=0; i<arrConf.size(); i++) {
+			objects[0] = new GraphicObject(arrConf[i][0], arrConf[i][1], arrConf[i][2], arrConf[i][3]);
+			objects[0].resize(arrConf[i][4], arrConf[i][5]);
+		}
 	}
 
 	@Override
